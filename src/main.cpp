@@ -1,5 +1,6 @@
 #include "main.h"
 #include <cstdlib>
+// check globals.cpp for global variables and stuff, helper.cpp for helper functions
 
 /**
  * A callback function for LLEMU's center button.
