@@ -44,3 +44,13 @@ lemlib::ControllerSettings angular_controller(1, // proportional gain (kP)
 );
 
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
+
+// PATHS
+ASSET(left1_txt);
+ASSET(left2_txt);
+ASSET(left3_txt);
+ASSET(left4_txt);
+ASSET(right1_txt);
+ASSET(right2_txt);
+ASSET(right3_txt);
+ASSET(right4_txt);
