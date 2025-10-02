@@ -1,6 +1,8 @@
 #include "main.h"
 #include <cstdlib>
-// check globals.cpp for global variables and stuff, helper.cpp for helper functions
+// check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) is a macro or smth idk why)
+
+std::string auton_state = "left";
 
 /**
  * A callback function for LLEMU's center button.
@@ -60,7 +62,25 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-    
+    if (auton_state == "left") {
+		// left auton code here
+	} else if (auton_state == "right") {
+		// right auton code here
+	} else if (auton_state == "skills") {
+		chassis.follow(planA1_txt, 15, 5000, true, false);
+		chassis.follow(planA2_txt, 15, 5000, true, false);
+		chassis.follow(planA3_txt, 15, 5000, true, false);
+		chassis.follow(planA4_txt, 15, 5000, true, false);
+		chassis.follow(planA5_txt, 15, 5000, true, false);
+		chassis.follow(planA6_txt, 15, 5000, true, false);
+		chassis.follow(planA7_txt, 15, 5000, true, false);
+		chassis.follow(planA8_txt, 15, 5000, true, false);
+		chassis.follow(planA9_txt, 15, 5000, true, false);
+		chassis.follow(planA10_txt, 15, 5000, true, false);
+		chassis.follow(planA11_txt, 15, 5000, true, false);
+		chassis.follow(planA12_txt, 15, 5000, true, false);
+		chassis.follow(planA13_txt, 15, 5000, true, false);
+	}
 }
 
 /**

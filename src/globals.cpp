@@ -3,8 +3,8 @@
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
-pros::MotorGroup rightMotors({20, 19, -18}, pros::MotorGearset::green);
-pros::MotorGroup leftMotors({-11, -13, 12}, pros::MotorGearset::green);
+pros::MotorGroup rightMotors({15, 17}, pros::MotorGearset::green);
+pros::MotorGroup leftMotors({-11, -13}, pros::MotorGearset::green);
 
 pros::IMU imu(1);
 pros::Rotation horizontal_encoder(2);
@@ -13,11 +13,10 @@ lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omn
 pros::Rotation vertical_encoder(2);
 lemlib::TrackingWheel vertical_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_275, 0.1);
 
-// pros::Vision vision_sensor(0);
-
 // dimensions: width 12.75, length 15.5 <-- Remeasure this from the middle of the middle wheels because that maye be a source of ERROR in the auton
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.75, lemlib::Omniwheel::NEW_325, 400, 8);
-lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu);
+lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, &imu); // IMEs
+// lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu); // tracking wheels
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
@@ -44,13 +43,3 @@ lemlib::ControllerSettings angular_controller(1, // proportional gain (kP)
 );
 
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
-
-// PATHS
-ASSET(left1_txt);
-ASSET(left2_txt);
-ASSET(left3_txt);
-ASSET(left4_txt);
-ASSET(right1_txt);
-ASSET(right2_txt);
-ASSET(right3_txt);
-ASSET(right4_txt);
