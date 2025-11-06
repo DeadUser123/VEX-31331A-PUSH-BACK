@@ -6,6 +6,22 @@ void exampleFunction() {
     pros::lcd::set_text(2, "Example function called");
 }
 
+void setIntake(int speed) {
+
+}
+
+void setHopperMotor(int speed) {
+    
+}
+
+void set2ndStage(int speed) {
+
+}
+
+void set3rdStage(int speed) {
+    
+}
+
 /*
 <SC6> An Autonomous Win Point is awarded to any Alliance that ends the Autonomous Period with all of the following tasks completed, and that has committed no Violations during the Autonomous Period:
 

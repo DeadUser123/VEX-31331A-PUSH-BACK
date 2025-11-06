@@ -1,9 +1,12 @@
 #include "main.h"
+#include "pros/motors.hpp"
 
 extern pros::Controller controller;
 extern lemlib::Chassis chassis;
+extern pros::MotorGroup rightMotors;
+extern pros::MotorGroup leftMotors;
 
-ASSET(left1_txt);
+ASSET(left1_txt); // full explanation: ASSET(x) is a macro and is basically the equivalent of #include x
 ASSET(left2_txt);
 ASSET(left3_txt);
 ASSET(left4_txt);
@@ -24,3 +27,7 @@ ASSET(planA10_txt);
 ASSET(planA11_txt);
 ASSET(planA12_txt);
 ASSET(planA13_txt);
+ASSET(thedream1_txt);
+ASSET(thedream2_txt);
+ASSET(thedream3_txt);
+ASSET(thedream4_txt);

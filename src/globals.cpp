@@ -3,9 +3,20 @@
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 // motor groups
-pros::MotorGroup rightMotors({15, 17}, pros::MotorGearset::green);
-pros::MotorGroup leftMotors({-11, -13}, pros::MotorGearset::green);
+pros::MotorGroup rightMotors({15, 17, 10});
+pros::MotorGroup leftMotors({-11, -13, -12});
 
+// Set per-motor gearsets to support mixed cartridges (use a static initializer)
+namespace {
+struct MotorGearsInit {
+    MotorGearsInit() {
+        rightMotors.set_gearing({pros::MotorGearset::blue, pros::MotorGearset::blue, pros::MotorGearset::green});
+        leftMotors.set_gearing({pros::MotorGearset::blue, pros::MotorGearset::blue, pros::MotorGearset::green});
+    }
+} motorGearsInit;
+}
+
+// Sensors
 pros::IMU imu(1);
 pros::Rotation horizontal_encoder(2);
 lemlib::TrackingWheel horizontal_tracking_wheel(&horizontal_encoder, lemlib::Omniwheel::NEW_275, 0.1);
@@ -15,8 +26,8 @@ lemlib::TrackingWheel vertical_tracking_wheel(&horizontal_encoder, lemlib::Omniw
 
 // dimensions: width 12.75, length 15.5 <-- Remeasure this from the middle of the middle wheels because that maye be a source of ERROR in the auton
 lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 12.75, lemlib::Omniwheel::NEW_325, 400, 8);
-lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, &imu); // IMEs
-// lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu); // tracking wheels
+// lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, nullptr); // IMEs
+lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, &horizontal_tracking_wheel, nullptr, &imu); // tracking wheels
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)

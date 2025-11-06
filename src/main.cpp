@@ -1,6 +1,9 @@
 #include "main.h"
 #include <cstdlib>
-// check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) is a macro or smth idk why)
+#include "globals.hpp"
+#include "helper.hpp"
+
+// * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
 std::string auton_state = "left";
 
@@ -67,18 +70,32 @@ void autonomous() {
 	} else if (auton_state == "right") {
 		// right auton code here
 	} else if (auton_state == "skills") {
+		// TODO: add proper robot rotations and positionings and intakings between paths
+		chassis.setPose(0, 0, 0);
 		chassis.follow(planA1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 5000);
 		chassis.follow(planA2_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180+45, 5000);
 		chassis.follow(planA3_txt, 15, 5000, true, false);
+		chassis.turnToHeading(135, 5000);
 		chassis.follow(planA4_txt, 15, 5000, true, false);
+		chassis.turnToHeading(225, 5000);
 		chassis.follow(planA5_txt, 15, 5000, true, false);
+		chassis.turnToHeading(45, 5000);
 		chassis.follow(planA6_txt, 15, 5000, true, false);
+		chassis.turnToHeading(45, 5000);
 		chassis.follow(planA7_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 500);
 		chassis.follow(planA8_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 5000);
 		chassis.follow(planA9_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 5000);
 		chassis.follow(planA10_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 5000);
 		chassis.follow(planA11_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 5000);
 		chassis.follow(planA12_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 5000);
 		chassis.follow(planA13_txt, 15, 5000, true, false);
 	}
 }
