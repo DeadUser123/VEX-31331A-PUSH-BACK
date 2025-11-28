@@ -122,23 +122,12 @@ void opcontrol() {
         // get left y and right y positions
         int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+		int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
         // move the robot
         chassis.arcade(0.97 * leftY, 0.5 * leftX);
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-			intakeMotor.move(127);
-			intakeMotor2.move(127);
-			intakeMotor3.move(127);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			intakeMotor.move(-127);
-			intakeMotor2.move(-127);
-			intakeMotor3.move(-127);
-		} else {
-			intakeMotor.move(0);
-			intakeMotor2.move(0);
-			intakeMotor3.move(0);
-		}
+		intake.move(rightY);
 
 		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
 			toggleflap();

@@ -6,9 +6,10 @@ extern lemlib::Chassis chassis;
 extern pros::MotorGroup rightMotors;
 extern pros::MotorGroup leftMotors;
 
-extern pros::Motor intakeMotor;
-extern pros::Motor intakeMotor2;
-extern pros::Motor intakeMotor3;
+// extern pros::Motor intakeMotor;
+// extern pros::Motor intakeMotor2;
+// extern pros::Motor intakeMotor3;
+extern pros::MotorGroup intake;
 
 extern pros::adi::DigitalOut matchloader;
 extern pros::adi::DigitalOut flap;

@@ -34,9 +34,11 @@ pros::MotorGroup leftMotors({leftMotor1Port,leftMotor2Port, leftMotor3Port}, pro
 // } motorGearsInit;
 // }
 
-pros::Motor intakeMotor(intakeMotorPort, pros::MotorGearset::green);
-pros::Motor intakeMotor2(topIntakeMotorPort, pros::MotorGearset::green);
-pros::Motor intakeMotor3(middleIntakeMotorPort, pros::MotorGearset::green);
+// pros::Motor intakeMotor(intakeMotorPort, pros::MotorGearset::green);
+// pros::Motor intakeMotor2(topIntakeMotorPort, pros::MotorGearset::green);
+// pros::Motor intakeMotor3(middleIntakeMotorPort, pros::MotorGearset::green);
+
+pros::MotorGroup intake({intakeMotorPort, topIntakeMotorPort, middleIntakeMotorPort}, pros::MotorGearset::green);
 
 pros::adi::DigitalOut matchloader('A');
 
