@@ -5,7 +5,7 @@
 
 // * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
-std::string auton_state = "left";
+std::string auton_state = "test";
 
 /**
  * A callback function for LLEMU's center button.
@@ -33,6 +33,7 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Intialized");
 	pros::lcd::register_btn1_cb(on_center_button);
+	chassis.calibrate();
 }
 
 /**
@@ -65,6 +66,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
+	chassis.moveToPoint(0, 24, 5000);
     if (auton_state == "left") {
 		// left auton code here
 	} else if (auton_state == "right") {
@@ -122,7 +124,28 @@ void opcontrol() {
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 
         // move the robot
-        chassis.arcade(-0.97 * leftY, 0.5 * leftX);
+        chassis.arcade(0.97 * leftY, 0.5 * leftX);
+
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			intakeMotor.move(127);
+			intakeMotor2.move(127);
+			intakeMotor3.move(127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			intakeMotor.move(-127);
+			intakeMotor2.move(-127);
+			intakeMotor3.move(-127);
+		} else {
+			intakeMotor.move(0);
+			intakeMotor2.move(0);
+			intakeMotor3.move(0);
+		}
+
+		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
+			toggleflap();
+		}
+		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
+			toggleMatchloader();
+		}
         pros::delay(25);
     }
 }

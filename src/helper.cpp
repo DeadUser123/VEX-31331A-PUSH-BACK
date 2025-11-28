@@ -1,5 +1,9 @@
 #include "main.h"
+#include "globals.hpp"
+
 // helper functions go here, make sure to update helper.hpp when adding new functions
+bool flap_state = false;
+bool matchloader_state = false;
 
 void exampleFunction() {
     // Example function that does nothing
@@ -20,6 +24,16 @@ void set2ndStage(int speed) {
 
 void set3rdStage(int speed) {
     
+}
+
+void toggleflap() {
+    flap.set_value(!flap_state);
+    flap_state = !flap_state;
+}
+
+void toggleMatchloader() {
+    matchloader.set_value(!matchloader_state);
+    matchloader_state = !matchloader_state;
 }
 
 /*
