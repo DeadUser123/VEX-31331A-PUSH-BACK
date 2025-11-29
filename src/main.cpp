@@ -2,10 +2,11 @@
 #include <cstdlib>
 #include "globals.hpp"
 #include "helper.hpp"
+#include "pros/misc.h"
 
 // * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
-std::string auton_state = "test";
+std::string auton_state = "move"; // default auton state
 
 /**
  * A callback function for LLEMU's center button.
@@ -34,6 +35,8 @@ void initialize() {
 	pros::lcd::set_text(1, "Intialized");
 	pros::lcd::register_btn1_cb(on_center_button);
 	chassis.calibrate();
+	toggleMatchloader();
+	toggleflap();
 }
 
 /**
@@ -66,11 +69,38 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	chassis.moveToPoint(0, 24, 5000);
-    if (auton_state == "left") {
-		// left auton code here
+	if (auton_state == "test") {
+		chassis.moveToPoint(0, 24, 5000);
+	} else if (auton_state == "left") {
+		toggleflap();
+		toggleMatchloader();
+		chassis.setPose(-62.532, 14.472, 90);
+		chassis.follow(left1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 1000);
+		chassis.follow(left2_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 1000);
+		chassis.follow(left3_txt, 15, 5000, true, false);
+		intake.move(127);
+		pros::delay(2000);
+		intake.move(0);
+		chassis.follow(left4_txt, 15, 5000, false, false);
+		toggleflap();
+		intake.move(127);
 	} else if (auton_state == "right") {
-		// right auton code here
+		toggleflap();
+		toggleMatchloader();
+		chassis.setPose(-62.532, -14.472, 90);
+		chassis.follow(right1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000);
+		chassis.follow(right2_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 1000);
+		chassis.follow(right3_txt, 15, 5000, true, false);
+		intake.move(127);
+		pros::delay(2000);
+		intake.move(0);
+		chassis.follow(right4_txt, 15, 5000, false, false);
+		toggleflap();
+		intake.move(127);
 	} else if (auton_state == "skills") {
 		// TODO: add proper robot rotations and positionings and intakings between paths
 		chassis.setPose(0, 0, 0);
@@ -99,6 +129,15 @@ void autonomous() {
 		chassis.follow(planA12_txt, 15, 5000, true, false);
 		chassis.turnToHeading(270, 5000);
 		chassis.follow(planA13_txt, 15, 5000, true, false);
+	} else if (auton_state == "bskills") {
+		chassis.setPose(0, 0, 0);
+		chassis.arcade(127, 0);
+		intake.move(127);
+		pros::delay(5000);
+		chassis.arcade(0, 0);
+	} else if (auton_state == "move") {
+		chassis.setPose(0, 0, 0);
+		chassis.moveToPoint(0, 10, 5000);
 	}
 }
 
@@ -120,20 +159,34 @@ void opcontrol() {
 	
 	while (true) {
         // get left y and right y positions
-        int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-		int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+        int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+		int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 
         // move the robot
-        chassis.arcade(0.97 * leftY, 0.5 * leftX);
+        chassis.arcade(rightY, 0.8 * rightX);
 
-		intake.move(rightY);
+		// intake.move(leftY);
+
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+			intake.move(-127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+			intake.move(127);
+		} else {
+			intake.move(0);
+		}
 
 		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
 			toggleflap();
 		}
 		if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)) {
 			toggleMatchloader();
+		}
+
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+			intakeMotor.move(127);
+			middleIntake.move(-127);
+			topIntake.move(127);
 		}
         pros::delay(25);
     }

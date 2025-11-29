@@ -1,22 +1,23 @@
+#include "lemlib/chassis/chassis.hpp"
 #include "main.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
 
-std::int8_t rightMotor1Port = 2;
-std::int8_t rightMotor2Port = 4;
-std::int8_t rightMotor3Port = 15;
+std::int8_t rightMotor1Port = 10;
+std::int8_t rightMotor2Port = 9;
+std::int8_t rightMotor3Port = 8;
 
-std::int8_t leftMotor1Port = -1;
-std::int8_t leftMotor2Port = -3;
-std::int8_t leftMotor3Port = -20;
+std::int8_t leftMotor1Port = -14;
+std::int8_t leftMotor2Port = -15;
+std::int8_t leftMotor3Port = -17;
 
-std::int8_t intakeMotorPort = 11;
-std::int8_t topIntakeMotorPort = -9;
-std::int8_t middleIntakeMotorPort = -13;
+std::int8_t intakeMotorPort = 5;
+std::int8_t topIntakeMotorPort = 2;
+std::int8_t middleIntakeMotorPort = -6;
 
-std::int8_t horizontalEncoderPort = -6;
-std::int8_t verticalEncoderPort = -8;
-std::int8_t imuPort = 10;
+std::int8_t horizontalEncoderPort = -3;
+std::int8_t verticalEncoderPort = -4;
+std::int8_t imuPort = 3;
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
@@ -34,9 +35,9 @@ pros::MotorGroup leftMotors({leftMotor1Port,leftMotor2Port, leftMotor3Port}, pro
 // } motorGearsInit;
 // }
 
-// pros::Motor intakeMotor(intakeMotorPort, pros::MotorGearset::green);
-// pros::Motor intakeMotor2(topIntakeMotorPort, pros::MotorGearset::green);
-// pros::Motor intakeMotor3(middleIntakeMotorPort, pros::MotorGearset::green);
+pros::Motor intakeMotor(intakeMotorPort, pros::MotorGearset::green);
+pros::Motor topIntake(topIntakeMotorPort, pros::MotorGearset::green);
+pros::Motor middleIntake(middleIntakeMotorPort, pros::MotorGearset::green);
 
 pros::MotorGroup intake({intakeMotorPort, topIntakeMotorPort, middleIntakeMotorPort}, pros::MotorGearset::green);
 
@@ -81,4 +82,17 @@ lemlib::ControllerSettings angular_controller(1, // proportional gain (kP)
                                               10 // maximum acceleration (slew)
 );
 
-lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
+// input curve for throttle input during driver control
+lemlib::ExpoDriveCurve throttle_curve(3, // joystick deadband out of 127
+                                     10, // minimum output where drivetrain will move out of 127
+                                     1.019 // expo curve gain
+);
+
+// input curve for steer input during driver control
+lemlib::ExpoDriveCurve steer_curve(3, // joystick deadband out of 127
+                                  10, // minimum output where drivetrain will move out of 127
+                                  1.019 // expo curve gain
+);
+
+
+lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors, &throttle_curve, &steer_curve);
