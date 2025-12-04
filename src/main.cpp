@@ -6,7 +6,7 @@
 
 // * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
-std::string auton_state = "move"; // default auton state
+std::string auton_state = "test"; // default auton state
 
 /**
  * A callback function for LLEMU's center button.
@@ -70,7 +70,8 @@ void competition_initialize() {}
  */
 void autonomous() {
 	if (auton_state == "test") {
-		chassis.moveToPoint(0, 24, 5000);
+		chassis.moveToPoint(0, 24, 10000);
+		// chassis.turnToHeading(90, 10000);
 	} else if (auton_state == "left") {
 		toggleflap();
 		toggleMatchloader();
