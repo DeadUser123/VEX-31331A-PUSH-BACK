@@ -21,6 +21,9 @@ std::int8_t imuPort = 3;
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
+// Autonomous selector (0 = left, 1 = right, 2 = skills, 3 = test)
+int auton_selector = 0;
+
 // motor groups
 pros::MotorGroup rightMotors({rightMotor1Port, rightMotor2Port, rightMotor3Port}, pros::MotorGearset::blue);
 pros::MotorGroup leftMotors({leftMotor1Port,leftMotor2Port, leftMotor3Port}, pros::MotorGearset::blue);
@@ -54,7 +57,7 @@ pros::Rotation vertical_encoder(verticalEncoderPort);
 lemlib::TrackingWheel vertical_tracking_wheel(&vertical_encoder, lemlib::Omniwheel::NEW_275, 0.625);
 
 // dimensions: width 12.75, length 15.5 <-- Remeasure this from the middle of the middle wheels because that maye be a source of ERROR in the auton
-lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.75, lemlib::Omniwheel::NEW_325, 450, 8);
+lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 11.75, lemlib::Omniwheel::NEW_325, 450, 0);
 // lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, nullptr); // IMEs
 lemlib::OdomSensors sensors(&vertical_tracking_wheel, nullptr, nullptr, nullptr, &imu); // tracking wheels
 
@@ -79,10 +82,10 @@ lemlib::ControllerSettings angular_controller(9, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               80, // derivative gain (kD)
                                               0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in inches
-                                              0, // large error range timeout, in milliseconds
+                                              1, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              3, // large error range, in inches
+                                              500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
 

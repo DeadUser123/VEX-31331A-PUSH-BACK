@@ -70,7 +70,11 @@ void competition_initialize() {}
  */
 void autonomous() {
 	if (auton_state == "test") {
-		chassis.moveToPoint(0, 24, 10000);
+		chassis.setPose(-62.307, 18.553, 90);
+		chassis.follow(leftB1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(315, 5000);
+		chassis.follow(leftB2_txt, 15, 5000, true, false);
+		chassis.follow(leftB3_txt, 15, 5000, false, false);
 		// chassis.turnToHeading(90, 10000);
 	} else if (auton_state == "left") {
 		toggleflap();

@@ -1,3 +1,4 @@
+#include "lemlib/asset.hpp"
 #include "main.h"
 #include "pros/motors.hpp"
 
@@ -5,6 +6,9 @@ extern pros::Controller controller;
 extern lemlib::Chassis chassis;
 extern pros::MotorGroup rightMotors;
 extern pros::MotorGroup leftMotors;
+
+// Autonomous selector
+extern int auton_selector;
 
 extern pros::Motor intakeMotor;
 extern pros::Motor topIntake;
@@ -39,3 +43,8 @@ ASSET(thedream1_txt);
 ASSET(thedream2_txt);
 ASSET(thedream3_txt);
 ASSET(thedream4_txt);
+ASSET(test_txt)
+
+ASSET(leftB1_txt);
+ASSET(leftB2_txt);
+ASSET(leftB3_txt);
