@@ -3,21 +3,21 @@
 #include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
 
-std::int8_t rightMotor1Port = 10;
-std::int8_t rightMotor2Port = 9;
-std::int8_t rightMotor3Port = 8;
+std::int8_t rightMotor1Port = 20;
+std::int8_t rightMotor2Port = 18;
+std::int8_t rightMotor3Port = -8; // top
 
-std::int8_t leftMotor1Port = -14;
-std::int8_t leftMotor2Port = -15;
-std::int8_t leftMotor3Port = -17;
+std::int8_t leftMotor1Port = -11;
+std::int8_t leftMotor2Port = -13;
+std::int8_t leftMotor3Port = 3; // top
 
-std::int8_t intakeMotorPort = 5;
-std::int8_t topIntakeMotorPort = 2;
-std::int8_t middleIntakeMotorPort = -6;
+std::int8_t intakeMotorPort = -10;
+std::int8_t topIntakeMotorPort = 1;
+std::int8_t middleIntakeMotorPort = -2;
 
-std::int8_t horizontalEncoderPort = -3;
-std::int8_t verticalEncoderPort = -4;
-std::int8_t imuPort = 3;
+std::int8_t horizontalEncoderPort = 5;
+std::int8_t verticalEncoderPort = 6;
+std::int8_t imuPort = 15;
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
@@ -44,9 +44,9 @@ pros::Motor middleIntake(middleIntakeMotorPort, pros::MotorGearset::green);
 
 pros::MotorGroup intake({intakeMotorPort, topIntakeMotorPort, middleIntakeMotorPort}, pros::MotorGearset::green);
 
-pros::adi::DigitalOut matchloader('A');
+pros::adi::DigitalOut matchloader('H');
 
-pros::adi::DigitalOut flap('B');
+pros::adi::DigitalOut flap('A');
 
 // Sensors
 pros::IMU imu(imuPort);
