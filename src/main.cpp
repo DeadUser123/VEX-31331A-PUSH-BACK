@@ -192,6 +192,10 @@ void opcontrol() {
 			intakeMotor.move(127);
 			middleIntake.move(-127);
 			topIntake.move(127);
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+			intakeMotor.move(-127);
+			middleIntake.move(127);
+			topIntake.move(-127);
 		}
         pros::delay(25);
     }
