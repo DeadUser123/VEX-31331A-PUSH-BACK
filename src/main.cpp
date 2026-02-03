@@ -6,7 +6,7 @@
 
 // * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
-std::string auton_state = "test"; // default auton state
+std::string auton_state = "move"; // default auton state
 
 /**
  * A callback function for LLEMU's center button.
@@ -77,7 +77,6 @@ void autonomous() {
 		chassis.follow(leftB3_txt, 15, 5000, false, false);
 		// chassis.turnToHeading(90, 10000);
 	} else if (auton_state == "left") {
-		toggleflap();
 		toggleMatchloader();
 		chassis.setPose(-62.532, 14.472, 90);
 		chassis.follow(left1_txt, 15, 5000, true, false);
@@ -85,14 +84,12 @@ void autonomous() {
 		chassis.follow(left2_txt, 15, 5000, true, false);
 		chassis.turnToHeading(270, 1000);
 		chassis.follow(left3_txt, 15, 5000, true, false);
-		intake.move(127);
+		intake.move(-127);
 		pros::delay(2000);
-		intake.move(0);
 		chassis.follow(left4_txt, 15, 5000, false, false);
 		toggleflap();
-		intake.move(127);
+		intake.move(-127);
 	} else if (auton_state == "right") {
-		toggleflap();
 		toggleMatchloader();
 		chassis.setPose(-62.532, -14.472, 90);
 		chassis.follow(right1_txt, 15, 5000, true, false);
@@ -100,12 +97,11 @@ void autonomous() {
 		chassis.follow(right2_txt, 15, 5000, true, false);
 		chassis.turnToHeading(270, 1000);
 		chassis.follow(right3_txt, 15, 5000, true, false);
-		intake.move(127);
+		intake.move(-127);
 		pros::delay(2000);
-		intake.move(0);
 		chassis.follow(right4_txt, 15, 5000, false, false);
 		toggleflap();
-		intake.move(127);
+		intake.move(-127);
 	} else if (auton_state == "skills") {
 		// TODO: add proper robot rotations and positionings and intakings between paths
 		chassis.setPose(0, 0, 0);
@@ -142,7 +138,7 @@ void autonomous() {
 		chassis.arcade(0, 0);
 	} else if (auton_state == "move") {
 		chassis.setPose(0, 0, 0);
-		chassis.moveToPoint(0, 10, 5000);
+		chassis.moveToPoint(0, 7, 5000);
 	}
 }
 
@@ -167,13 +163,14 @@ void opcontrol() {
         int rightX = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
         int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 		int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+		int leftX = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 
         // move the robot
-        chassis.arcade(rightY, 0.8 * rightX);
+        chassis.arcade(rightY, 0.8 * leftX);
 
 		// intake.move(leftY);
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
 			intake.move(-127);
 		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
 			intake.move(127);
