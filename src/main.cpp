@@ -170,9 +170,9 @@ void opcontrol() {
 
 		// intake.move(leftY);
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
 			intake.move(-127);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 			intake.move(127);
 		} else {
 			intake.move(0);
@@ -185,11 +185,11 @@ void opcontrol() {
 			toggleMatchloader();
 		}
 
-		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_LEFT)) {
 			intakeMotor.move(127);
 			middleIntake.move(-127);
 			topIntake.move(127);
-		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+		} else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
 			intakeMotor.move(-127);
 			middleIntake.move(127);
 			topIntake.move(-127);
