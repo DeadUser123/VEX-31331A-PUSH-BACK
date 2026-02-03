@@ -7,6 +7,14 @@
 // * check globals.cpp for global variables and stuff, helper.cpp for helper functions, globals.hpp for paths (because ASSET(x) provides an extern)
 
 std::string auton_state = "move"; // default auton state
+/* SKILLS INFO
+? left, right - left and right match autons 
+? move - auton move forward 7 inches
+? skills - untested full skills auton
+? bskills - moves bot forward at full speed, intended to have bot face park zone and enter it
+? cskills - bot on left of park zone facing forward, bot attempts to clear both park zones and then park
+? dskills - same as cskills but it also attempts to clear the matchloaders and score
+/
 
 /**
  * A callback function for LLEMU's center button.
@@ -106,29 +114,29 @@ void autonomous() {
 		// TODO: add proper robot rotations and positionings and intakings between paths
 		chassis.setPose(0, 0, 0);
 		chassis.follow(planA1_txt, 15, 5000, true, false);
-		chassis.turnToHeading(90, 5000);
+		chassis.turnToHeading(90, 5000, {}, false);
 		chassis.follow(planA2_txt, 15, 5000, true, false);
-		chassis.turnToHeading(180+45, 5000);
+		chassis.turnToHeading(180+45, 5000, {}, false);
 		chassis.follow(planA3_txt, 15, 5000, true, false);
-		chassis.turnToHeading(135, 5000);
+		chassis.turnToHeading(135, 5000, {}, false);
 		chassis.follow(planA4_txt, 15, 5000, true, false);
-		chassis.turnToHeading(225, 5000);
+		chassis.turnToHeading(225, 5000, {}, false);
 		chassis.follow(planA5_txt, 15, 5000, true, false);
-		chassis.turnToHeading(45, 5000);
+		chassis.turnToHeading(45, 5000, {}, false);
 		chassis.follow(planA6_txt, 15, 5000, true, false);
-		chassis.turnToHeading(45, 5000);
+		chassis.turnToHeading(45, 5000, {}, false);
 		chassis.follow(planA7_txt, 15, 5000, true, false);
-		chassis.turnToHeading(270, 500);
+		chassis.turnToHeading(270, 500, {}, false);
 		chassis.follow(planA8_txt, 15, 5000, true, false);
-		chassis.turnToHeading(0, 5000);
+		chassis.turnToHeading(0, 5000, {}, false);
 		chassis.follow(planA9_txt, 15, 5000, true, false);
-		chassis.turnToHeading(90, 5000);
+		chassis.turnToHeading(90, 5000, {}, false);
 		chassis.follow(planA10_txt, 15, 5000, true, false);
-		chassis.turnToHeading(0, 5000);
+		chassis.turnToHeading(0, 5000, {}, false);
 		chassis.follow(planA11_txt, 15, 5000, true, false);
-		chassis.turnToHeading(90, 5000);
+		chassis.turnToHeading(90, 5000, {}, false);
 		chassis.follow(planA12_txt, 15, 5000, true, false);
-		chassis.turnToHeading(270, 5000);
+		chassis.turnToHeading(270, 5000, {}, false);
 		chassis.follow(planA13_txt, 15, 5000, true, false);
 	} else if (auton_state == "bskills") {
 		chassis.setPose(0, 0, 0);
@@ -139,6 +147,98 @@ void autonomous() {
 	} else if (auton_state == "move") {
 		chassis.setPose(0, 0, 0);
 		chassis.moveToPoint(0, 7, 5000);
+	} else if (auton_state == "cskills") {
+		chassis.setPose(-62.532, 14.472, 90);
+		chassis.follow(CSkills1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000, {}, false);
+		intake.move(-127);
+		toggleMatchloader();
+		pros::delay(500);
+		chassis.follow(CSkills2_txt, 15, 5000, true, false);
+		chassis.follow(CSkills3_txt, 15, 5000, false, false);
+		toggleMatchloader();
+		pros::delay(500);
+		chassis.turnToHeading(270, 1000, {}, false);
+		chassis.follow(CSkills4_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000, {}, false);
+		toggleMatchloader();
+		pros::delay(500);
+		chassis.follow(CSkills5_txt, 15, 5000, false, false);
+	} else if (auton_state == "dskills") {
+		toggleMatchloader();
+		chassis.setPose(-62.532, 14.472, 90);
+		chassis.follow(DSkills1_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 1000, {}, false);
+		chassis.follow(DSkills2_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 1000, {}, false);
+		chassis.follow(DSkills3_txt, 15, 5000, true, false);
+		intake.move(-127);
+		pros::delay(1000); // matchload from topleft (relative to pathjerryio)
+		chassis.follow(DSkills4_txt, 15, 5000, false, false);
+		toggleflap();
+		intake.move(-127);
+		pros::delay(1000); // score topleft
+		intake.move(0);
+		toggleflap();
+		chassis.follow(DSkills5_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000, {}, false);
+		chassis.follow(DSkills6_txt, 15, 5000, true, false);
+		chassis.turnToHeading(270, 1000, {}, false);
+		chassis.follow(DSkills7_txt, 15, 5000, true, false);
+		intake.move(-127);
+		pros::delay(1000); // matchload bottomleft
+		chassis.follow(DSkills8_txt, 15, 5000, false, false);
+		toggleflap();
+		intake.move(-127);
+		pros::delay(1000); // score bottomleft
+		toggleflap();
+		intake.move(0);
+		chassis.follow(DSkills9_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 1000, {}, false);
+		chassis.follow(DSkills10_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 1000, {}, false);
+		chassis.follow(DSkills11_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000, {}, false);
+		chassis.follow(DSkills12_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 1000, {}, false);
+		chassis.follow(DSkills13_txt, 15, 5000, true, false);
+		intake.move(-127);
+		pros::delay(1000); // matchload bottomright
+		chassis.follow(DSkills14_txt, 15, 5000, false, false);
+		toggleflap();
+		pros::delay(1000); // score bottomright
+		intake.move(0);
+		toggleflap();
+		chassis.follow(DSkills15_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 1000, {}, false);
+		chassis.follow(DSkills16_txt, 15, 5000, true, false);
+		chassis.turnToHeading(90, 1000, {}, false);
+		chassis.follow(DSkills17_txt, 15, 5000, true, false);
+		intake.move(-127); // matchload topright
+		pros::delay(1000);
+		chassis.follow(DSkills18_txt, 15, 5000, false, false);
+		toggleflap();
+		pros::delay(1000); // score topright
+		intake.move(0);
+		toggleflap();
+		chassis.follow(DSkills19_txt, 15, 5000, true, false);
+		chassis.turnToHeading(135, 1000, {}, false);
+		toggleMatchloader();
+		pros::delay(100);
+		chassis.follow(DSkills20_txt, 15, 5000, true, false);
+		chassis.turnToHeading(180, 1000, {}, false);
+		toggleMatchloader();
+		pros::delay(100);
+		chassis.follow(DSkills21_txt, 15, 5000, true, false); // clear parkzone blue
+		toggleMatchloader();
+		pros::delay(100);
+		chassis.turnToHeading(270, 1000, {}, false);
+		chassis.follow(DSkills22_txt, 15, 5000, true, false);
+		chassis.turnToHeading(0, 1000, {}, false);
+		toggleMatchloader();
+		pros::delay(100);
+		chassis.follow(DSkills23_txt, 15, 5000, true, false); // clear & park in red zone
+		// i'm never creating a skills routine this long ever again god this took so long to type up
 	}
 }
 
